@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Environment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,24 +14,21 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.fahim.lokman.bluetoothchatapp.DeviceListActivity;
 import com.fahim.lokman.bluetoothchatapp.MainActivity;
 import com.fahim.lokman.bluetoothchatapp.R;
 import com.fahim.lokman.bluetoothchatapp.contents.Constant;
 import com.fahim.lokman.bluetoothchatapp.contents.MessageContents;
+import com.fahim.lokman.bluetoothchatapp.robot.BotChatActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-/**
- * Created by tawsifkhan on 8/14/16.
- */
+
 public class MessageAdapter extends BaseAdapter {
 
 
@@ -111,7 +107,7 @@ public class MessageAdapter extends BaseAdapter {
             holder.imageView.setVisibility(View.GONE);
         }
 
-        if(DeviceListActivity.DEVICE_ADDRESS.equals(messageContents.sender)) {
+        if(DeviceListActivity.DEVICE_ADDRESS.equals(messageContents.sender) || messageContents.sender.equals(BotChatActivity.ME)) {
             holder.LL.setGravity(Gravity.RIGHT);
             holder.messageView.setBackgroundColor(Color.parseColor("#efefef"));
             holder.imageView.setBackgroundColor(Color.parseColor("#efefef"));
@@ -157,6 +153,7 @@ public class MessageAdapter extends BaseAdapter {
                 if(MainActivity.voiceMessage.isPlaying){
                    // setPlayButton(position);
                     MainActivity.voiceMessage.stopAudioPlay();
+
                 }else {
                   //  setStopButton(position);
                     playingPosition = position;
@@ -202,7 +199,7 @@ public class MessageAdapter extends BaseAdapter {
 
     public void openFolder(String path)
     {
-        Toast.makeText(context,path,Toast.LENGTH_LONG).show();
+       // Toast.makeText(context,path,Toast.LENGTH_LONG).show();
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         Uri uri = Uri.parse(path);
         intent.setDataAndType(uri, "*/*");
